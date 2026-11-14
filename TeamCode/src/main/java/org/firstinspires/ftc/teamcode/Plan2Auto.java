@@ -131,12 +131,9 @@ public class Plan2Auto extends OpMode
         BACKWARD1,
         TURN1,
         BACKWARD2,
-        /* FORWARD1,
-           TURN2,
-           FORWARD2,
-           TURN3,
-           FORWARD3,
-       */  COMPLETE
+        TURN2,
+        BACKWARD3,
+        COMPLETE,
     }
 
     /*
@@ -270,14 +267,14 @@ public class Plan2Auto extends OpMode
             case BACKWARD1:
                 leftDrive.setPower(-.5);
                 rightDrive.setPower(-.5);
-                if(autoTimer.seconds() >.3) {
+                if(autoTimer.seconds() >.1) {
                     autoTimer.reset();
                     autonomousState = AutonomousState.TURN1;
                 }
                 break;
             case TURN1:
-                leftDrive.setPower(-0.5);
-                rightDrive.setPower(0.5);
+                leftDrive.setPower(-0.75);
+                rightDrive.setPower(0.75);
                 if (autoTimer.seconds() > .2) {
                     autoTimer.reset();
                     autonomousState =  AutonomousState.BACKWARD2;
@@ -286,36 +283,28 @@ public class Plan2Auto extends OpMode
             case BACKWARD2:
                 leftDrive.setPower(-.5);
                 rightDrive.setPower(-.5);
-                if(autoTimer.seconds() > 5.8) {
+                if(autoTimer.seconds() > 2) {
+                    autoTimer.reset();
+                    autonomousState = AutonomousState.TURN2;
+                }
+                break;
+            case TURN2:
+                leftDrive.setPower(0.5);
+                rightDrive.setPower(-0.5);
+                if (autoTimer.seconds() > .2) {
+                    autoTimer.reset();
+                    autonomousState = AutonomousState.BACKWARD3;
+                }
+                break;
+            case BACKWARD3:
+                leftDrive.setPower(-.5);
+                rightDrive.setPower(-.5);
+                if(autoTimer.seconds() > 1.6) {
+                    autoTimer.reset();
                     autonomousState = AutonomousState.COMPLETE;
                 }
                 break;
-            /*
-             * We changed rightdrive to -.5
-             */
-
-           /*
-            case FORWARD1:
-                leftDrive.setPower(.5);
-                rightDrive.setPower(.5);
-                if (autoTimer.seconds() >  14) {
-                    autonomousState = AutonomousState.TURN2;
-
-                }break;
-
-            case TURN2:
-                leftDrive.setPower(.5);
-                rightDrive.setPower(0);
-                if (autoTimer.seconds() > 15.3) {
-                    autonomousState = AutonomousState.FORWARD2;}
-                break;
-            case FORWARD2:
-                leftDrive.setPower(.5);
-                rightDrive.setPower(.5);
-                if (autoTimer.seconds() > 17.7 ) {
-                    autonomousState = AutonomousState.COMPLETE;}
-                break;
-          */  case COMPLETE:
+            case COMPLETE:
                 leftDrive.setPower(0);
                 rightDrive.setPower(0);
                 telemetry.addLine("Auto Complete!");

@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+import com.qualcomm.robotcore.hardware.Servo;
 
 
 /*
@@ -62,6 +63,8 @@ public class BioBuzzStarterBotTeleop extends OpMode {
     private CRServo leftIntakeServo = null;
     private CRServo rightIntakeServo = null;
     private CRServo windmillServo = null;
+    /* private Servo thumbsServo = null;*/
+    private Servo armServo = null;
 
     /*
      * These two variables are used to control the velocity of the launcher motor.
@@ -105,7 +108,8 @@ public class BioBuzzStarterBotTeleop extends OpMode {
         windmillServo = hardwareMap.get(CRServo.class, "windmill");
         leftIntakeServo = hardwareMap.get(CRServo.class, "left_intake_servo");
         rightIntakeServo = hardwareMap.get(CRServo.class, "right_intake_servo");
-
+        /* thumbsServo = hardwareMap.get(Servo.class, "thumbs_servo");*/
+        armServo = hardwareMap.get(Servo.class, "arm_servo");
         /*
          * To drive forward, most robots need the motor on one side to be reversed,
          * because the axles point in opposite directions. Pushing the left stick forward
@@ -143,6 +147,8 @@ public class BioBuzzStarterBotTeleop extends OpMode {
         leftIntakeServo.setPower(0);
         rightIntakeServo.setPower(0);
         windmillServo.setPower(0);
+        //thumbsServo.setPower(0);
+        //armServo.
 
         /*
          * Much like our drivetrain motors, we set the right intake servo to reverse so that both
@@ -265,13 +271,26 @@ public class BioBuzzStarterBotTeleop extends OpMode {
          * add some power to the intake power. This can sometimes help dislodge stuck elements from
          * inside the hopper.
          */
-        if (gamepad2.right_bumper/*& launcher.getVelocity() > LAUNCHER_MIN_VELOCITY*/){
+        if (gamepad2.right_bumper & launcher.getVelocity() > LAUNCHER_MIN_VELOCITY) {
             windmillServo.setPower(1);
             intakePower += 0.5;
         } else {
             windmillServo.setPower(0);
         }
-    }
 
+        if (gamepad2.x) {
+            armServo.setPosition(0.65);
+        } else {
+            armServo.setPosition(0);
+        }
 
-}
+        /*if(gamepad2.y){
+            thumbsServo.setPosition(1);
+        }
+        else {
+            thumbsServo.setPosition(0);
+        }*/
+
+        /* Alexa, Seaweed, and Millan da CYBERvillain are supa cool
+         */
+    }}
